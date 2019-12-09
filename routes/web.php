@@ -21,3 +21,4 @@ Route::get('/', function () {
 
 Route::get('save','Admin\TestController@save');
 Route::get('adduser','Admin\LoginController@adduser');
+Route::get('/wx','Weixin\WxController@wechat');
