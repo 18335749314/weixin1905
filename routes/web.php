@@ -15,10 +15,14 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// Route::get('/info',function(){
-//    phpinfo();
-// });
+ Route::get('/info',function(){
+    phpinfo();
+ });
 
 Route::get('save','Admin\TestController@save');
 Route::get('adduser','Admin\LoginController@adduser');
+
+
+//微信开发
 Route::get('/wx','Weixin\WxController@wechat');
+Route::post('/wx','Weixin\WxController@receiv');  //接收微信推动的推送事件
