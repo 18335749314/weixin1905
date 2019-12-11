@@ -1,35 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Weixin;
+namespace App\Http\Controllers\WeiXin;
 
 use App\Http\Controllers\Controller;
-use App\Model\UserModel;
 use Illuminate\Http\Request;
-
+use App\Model\WxUserModel;
 class WxController extends Controller
 {
-    //处理接入
-    public function wechat()
-    {
-        //aaaaaaa
-        $token = '2259b4567ujnbvgyuhbgyju192c50';       //开发提前设置好的 token
-        $signature = $_GET["signature"];
-        $timestamp = $_GET["timestamp"];
-        $nonce = $_GET["nonce"];
-        $echostr = $_GET["echostr"];
-
-        $tmpArr = array($token, $timestamp, $nonce);
-        sort($tmpArr, SORT_STRING);
-        $tmpStr = implode( $tmpArr );
-        $tmpStr = sha1( $tmpStr );
-
-        if( $tmpStr == $signature ){        //验证通过
-            echo $echostr;
-        }else{
-            die("not ok");
-        }
-    }
-
     protected $access_token;
 
     public function __construct()
@@ -43,6 +20,29 @@ class WxController extends Controller
         $data_json = file_get_contents($url);
         $arr = json_decode($data_json,true);
         return $arr['access_token'];
+    }
+
+
+    //处理接入
+    public function wechat(){
+        $token = '2259b56f5898cd6192c50';       //开发提前设置好的 token
+        $signature = $_GET["signature"];
+        $timestamp = $_GET["timestamp"];
+        $nonce = $_GET["nonce"];
+        $echostr = $_GET["echostr"];
+
+
+        $tmpArr = array($token, $timestamp, $nonce);
+        sort($tmpArr, SORT_STRING);
+        $tmpStr = implode( $tmpArr );
+        $tmpStr = sha1( $tmpStr );
+
+
+        if( $tmpStr == $signature ){        //验证通过
+            echo $echostr;
+        }else{
+            die("not ok");
+        }
     }
 
     /*
@@ -61,6 +61,20 @@ class WxController extends Controller
         $event = $xml_obj->Event;  //获取事件类型 是不是关注
         if($event=='subscribe'){
             $oppenid = $xml_obj->FromUserName;      //获取用户的oppenid
+            //判断用户是否存在
+            $res = WxUserModel::where('openid',$oppenid)->first();
+            if($res){
+                echo '欢迎回来';
+            }else{
+                $user_data = [
+                    'openid'    => $oppenid,
+                    'sub_time'  => $xml_obj->CreateTime,
+                ];
+                //入库
+                $u_id = WxUserModel::insertGetId($user_data);
+                var_dump($u_id);
+                die;
+            }
 
             //获取用户信息
             $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->access_token.'&openid='.$oppenid.'&lang=zh_CN';
@@ -71,8 +85,7 @@ class WxController extends Controller
         //判断消息类型
         $msg_type = $xml_obj->MsgType;
         $touser = $xml_obj->FromUserName;           //接收消息得到用户openid
-        $formuser = $xml_obj->ToUserName;           //自己开发
-
+        $formuser = $xml_obj->ToUserName;           //自己开发的公众号的id
         $time = time();
 
         if($msg_type=='text'){
@@ -100,6 +113,3 @@ class WxController extends Controller
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
 }
-
-
-

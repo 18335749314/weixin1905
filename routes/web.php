@@ -15,14 +15,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
- Route::get('/info',function(){
-    phpinfo();
- });
+Route::get('/info',function(){
+	phpinfo();
+});
+Route::get('/test/hello','Test\TestController@hello');
+Route::get('/test/adduser','User\LoginController@addUser');
+Route::get('/test/index','User\LoginController@index');
+Route::get('/test/delete/{uid}','User\LoginController@delete');
+Route::get('/test/edit/{uid}','User\LoginController@edit');
+Route::post('/test/update/{uid}','User\LoginController@update');
 
-Route::get('save','Admin\TestController@save');
-Route::get('adduser','Admin\LoginController@adduser');
-
+Route::get('/test/redis1','Test\TestController@redis1');
+Route::get('/test/baidu','Test\TestController@baidu');
 
 //微信开发
-Route::get('/wx','Weixin\WxController@wechat');
-Route::post('/wx','Weixin\WxController@receiv');  //接收微信推动的推送事件
+Route::get('/wx','WeiXin\WxController@wechat');
+Route::post('/wx','WeiXin\WxController@receiv');     //接收微信的推送事件
