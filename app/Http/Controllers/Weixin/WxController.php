@@ -12,7 +12,7 @@ class WxController extends Controller
     public function wechat()
     {
         //aaaaaaa
-        $token = '2259b56f5898cd6192c50';       //开发提前设置好的 token
+        $token = '2259b4567ujnbvgyuhbgyju192c50';       //开发提前设置好的 token
         $signature = $_GET["signature"];
         $timestamp = $_GET["timestamp"];
         $nonce = $_GET["nonce"];
