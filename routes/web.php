@@ -11,23 +11,23 @@
 |
 */
 
-Route::get('/', function () {
+Route::any('/', function () {
     return view('welcome');
 });
 
-Route::get('/info',function(){
+Route::any('/info',function(){
 	phpinfo();
 });
-Route::get('/test/hello','Test\TestController@hello');
-Route::get('/test/adduser','User\LoginController@addUser');
-Route::get('/test/index','User\LoginController@index');
-Route::get('/test/delete/{uid}','User\LoginController@delete');
-Route::get('/test/edit/{uid}','User\LoginController@edit');
-Route::post('/test/update/{uid}','User\LoginController@update');
+Route::any('/test/hello','Test\TestController@hello');
+Route::any('/test/adduser','User\LoginController@addUser');
+Route::any('/test/index','User\LoginController@index');
+Route::any('/test/delete/{uid}','User\LoginController@delete');
+Route::any('/test/edit/{uid}','User\LoginController@edit');
+Route::any('/test/update/{uid}','User\LoginController@update');
 
-Route::get('/test/redis1','Test\TestController@redis1');
-Route::get('/test/baidu','Test\TestController@baidu');
+Route::any('/test/redis1','Test\TestController@redis1');
+Route::any('/test/baidu','Test\TestController@baidu');
 
 //微信开发
-Route::get('/wx','WeiXin\WxController@wechat');
-Route::post('/wx','WeiXin\WxController@receiv');     //接收微信的推送事件
+Route::any('/wx','WeiXin\WxController@wechat');
+Route::any('/wx','WeiXin\WxController@receiv');     //接收微信的推送事件

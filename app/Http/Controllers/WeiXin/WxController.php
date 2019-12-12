@@ -37,7 +37,6 @@ class WxController extends Controller
         $tmpStr = implode( $tmpArr );
         $tmpStr = sha1( $tmpStr );
 
-
         if( $tmpStr == $signature ){        //验证通过
             echo $echostr;
         }else{
@@ -112,4 +111,34 @@ class WxController extends Controller
         $log_file = 'wx.user.log';
         file_put_contents($log_file,$json_str,FILE_APPEND);
     }
+    public function baidu(){
+        $url='https://theory.gmw.cn/2019-12/05/content_33377331.html';
+        $client = new Client();
+        $response = $client->request('GET',$url);
+        echo $response->getBody();
+
+    }
+
+    public function xmlTest(){
+        $xml_str= '<xml>
+                <ToUserName><![CDATA['.$touser.']]></ToUserName>
+                <FromUserName><![CDATA['.$formuser.']]></FromUserName>
+                <CreateTime>'.$time.'</CreateTime>
+                <MsgType><![CDATA[text]]></MsgType>
+                <Content><![CDATA['.$content.']]></Content>
+                </xml>
+                ';
+                $xml_obj = simplexml_load_string($xml_str);
+                echo '<pre>';print_r($xml_obj);echo '</pre>';die;
+                echo '<pre>';print_r($xml_obj);echo '</pre>';echo '<hr>';
+
+                echo 'ToUserName: '.$xml_obj->ToUserName;echo '</br>';
+                echo 'FromUserName: '.$xml_obj->FromUserName;echo '</br>';
+    }
+
+
+
+
+
+
 }
